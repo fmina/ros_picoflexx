@@ -1,0 +1,8 @@
+<launch>
+  <arg name="namespace" default="firefly"/>
+  <group ns="$(arg namespace)" >
+    <node name="picoflexx_cam" pkg="ros_picoflexx" type="ros_picoflexx_node" output="screen" respawn="true" clear_params="true">
+       <rosparam file="$(find ros_picoflexx)/parameters/picoflexx_config.yaml" />
+    </node>
+</group>
+</launch>

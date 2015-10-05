@@ -1,0 +1,9 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+MyListener	/Users/fmina/Downloads/libroyale/20150903_libroyale_0.9.5.32/libroyale-0.9.5.32-APPLE-64Bit/samples/sample2/sample2.cpp	/^class MyListener : public IDepthDataListener$/;"	class	line:9	file:
+onNewData	/Users/fmina/Downloads/libroyale/20150903_libroyale_0.9.5.32/libroyale-0.9.5.32-APPLE-64Bit/samples/sample2/sample2.cpp	/^    void onNewData (const DepthData *data)$/;"	function	line:11	class:MyListener	file:	signature:(const DepthData *data)
+main	/Users/fmina/Downloads/libroyale/20150903_libroyale_0.9.5.32/libroyale-0.9.5.32-APPLE-64Bit/samples/sample2/sample2.cpp	/^int main()$/;"	function	line:38	signature:()
