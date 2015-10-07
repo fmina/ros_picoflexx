@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 2.8.3)
 project(ros_picoflexx)
 
 add_definitions(-std=c++11)
-set(royale_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/libroyale-0.9.5.32-APPLE-64Bit/share")
+
+if (APPLE)
+  set(royale_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/libroyale-0.9.5.32-APPLE-64Bit/share")
+else (APPLE)
+  set(royale_DIR "${CMAKE_CURRENT_LIST_DIR}/lib/libroyale-0.9.5.32-LINUX-64Bit/share")
+endif (APPLE)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -137,13 +142,6 @@ add_executable(ros_picoflexx_node src/ros_picoflexx_node.cc)
 get_target_property(ros_picoflexx_node_location ros_picoflexx_node LOCATION)
 get_filename_component(ros_picoflexx_node_DIR ${ros_picoflexx_node_location} PATH)
 
-if (WIN32)
-    add_custom_command(
-        TARGET ros_picoflexx_node 
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy "${royale_INSTALL_PATH}/bin/royale.dll"  ${ros_picoflexx_node_DIR})
-endif (WIN32)
-
 if (APPLE)
     add_custom_command(
         TARGET ros_picoflexx_node 
@@ -154,7 +152,12 @@ if (APPLE)
         TARGET ros_picoflexx_node 
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy "${royale_INSTALL_PATH}/bin/libroyale.${royale_VERSION}.dylib"  ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_LIB_DESTINATION})
-endif (APPLE)
+else (APPLE)
+    add_custom_command(
+        TARGET ros_picoflexx_node 
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy "${royale_INSTALL_PATH}/bin/libroyale.so"  ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_LIB_DESTINATION})
+endif (APPLE)  
 
 #message(STATUS ${MyTargetDir})
 
