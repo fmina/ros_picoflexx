@@ -56,6 +56,8 @@ void PicoFlexxCamera::Initialize()
     ROS_ERROR("Cannot initialize the camera device");
     return;
   }
+  royale::LensParameters lensParams;
+  camera_device_->getLensParameters (lensParams);
 
   // display some information about the connected camera
   std::cout << "====================================" << std::endl;
@@ -66,6 +68,15 @@ void PicoFlexxCamera::Initialize()
   std::cout << "Width:           " << camera_device_->getMaxSensorWidth() << std::endl;
   std::cout << "Height:          " << camera_device_->getMaxSensorHeight() << std::endl;
   std::cout << "Operation modes: " << camera_device_->getOperationModes().size() << std::endl;
+  std::cout << "Focal Length  fx: " << lensParams.focalLength.first << std:endl;
+  std::cout << "Focal Length  fy: " << lensParams.focalLength.second << std::endl;
+  std::cout << "Principal Pt. px: " << lensParams.principalPoint.first << std::endl;
+  std::cout << "Principal Pt. py: " << lensParams.principalPoint.second << std::endl;
+  std::cout << "Dist. Coeff k1:   " << std::get<0>(lensParams.distortionRadial) << std::endl;
+  std::cout << "Dist. Coeff k2:   " << std::get<1>(lensParams.distortionRadial) << std::endl;
+  std::cout << "Dist. Coeff k3:   " << std::get<2>(lensParams.distortionRadial) << std::endl;
+  std::cout << "Dist. Coeff p1:   " << lensParams.distortionTangential.first << std::endl;
+  std::cout << "Dist. Coeff p2:   " << lensParams.distortionTangential.second << std::endl;
 
   for (auto mode : camera_device_->getOperationModes()) {
     std::cout << "    " << royale::getOperationModeName(mode) << std::endl;
