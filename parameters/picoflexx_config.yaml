@@ -9,4 +9,5 @@ cam0:
     exposure_time: 2000
     auto_exposure_time: false
     topic_name: pcl
+    topic_depth: depth/image_raw
     operation_mode: MODE_9_5FPS_2000
