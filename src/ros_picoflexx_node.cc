@@ -45,11 +45,18 @@ void PicoFlexxCamera::Initialize()
   nh_.param < std::string > ("operation_mode", operation_mode_, "MODE_9_5FPS_2000");
 
   std::vector < std::string > camlist = manager_.getConnectedCameraList();
+  bool camera_initialized = false;
   for (int i = 0; i < camlist.size(); i++) {
     if (camlist[i] == camera_id_) {
+      camera_initialized = true;
       camera_device_ = manager_.createCamera(camlist[i]);
       ROS_INFO_STREAM(camera_name_ << " initialized correctly");
     }
+  }
+  
+  if(camera_initialized == false){
+      ROS_ERROR("Camera ID cannot be found");
+      return;
   }
 
   if (camera_device_->initialize() != royale::CameraStatus::SUCCESS) {
@@ -184,6 +191,7 @@ int main(int argc, char** argv)
   }
 
   for (int i = 0; i < camlist.size(); i++) {
+    std::cout << "Detected a camera with ID: " << camlist[i] << std::endl;
     std::shared_ptr<PicoFlexxCamera> tmp;
     picoflexx_cameras_vector.push_back(tmp);
     picoflexx_cameras_vector.back().reset(new PicoFlexxCamera(manager, "cam" + std::to_string(i)));
