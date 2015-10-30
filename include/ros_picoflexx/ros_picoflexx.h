@@ -27,6 +27,9 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <ros_picoflexx/PicoFlexxConfig.h>
+#include <image_transport/image_transport.h>
+#include <sensor_msgs/image_encodings.h>
+#include <opencv2/opencv.hpp>
 
 
 class PicoFlexxCamera
@@ -72,8 +75,11 @@ class PicoFlexxCamera
 
       nh.param<std::string>("topic_name", topic_name_,  "pcl");
       nh.param<std::string>("frame_id", frame_id_, "cam_link");
+      nh.param<std::string>("topic_depth", topic_depth_,  "depth/image_raw");
 
       pcl_publisher_ = nh.advertise<sensor_msgs::PointCloud2>(topic_name_, 1);
+      image_transport::ImageTransport image_transport(nh);
+      depth_publisher_ = image_transport.advertise(topic_depth_, 1);
       seq_ = 0;
       cloud_.reset(new pcl::PointCloud<pcl::PointXYZ>);
     }
@@ -84,12 +90,14 @@ class PicoFlexxCamera
       cloud_->height = data->height;
       cloud_->width = data->width;
       cloud_->points.resize(cloud_->height * cloud_->width);
+      cv::Mat depth_mat(data->height,data->width,CV_16UC1);
 
       for (int i = 0; i < data->points.size(); i++) {
         pcl::PointXYZ& pt = cloud_->points[i];
         pt.x = data->points[i].x;
         pt.y = data->points[i].y;
         pt.z = data->points[i].z;
+        depth_mat.at<unsigned short>(i/data->width, i%data->width) = (unsigned short)5000*data->points[i].z;
       }
       pcl::toROSMsg(*cloud_, pcl2_msg_);
 
@@ -100,16 +108,33 @@ class PicoFlexxCamera
           - (int) (data->timeStamp.count() / 1000) * 1000) * 1000000;
 
       pcl_publisher_.publish(pcl2_msg_);
+      
+      depth_img_.header = pcl2_msg_.header;
+      depth_img_.width = depth_mat.cols;
+      depth_img_.height = depth_mat.rows;
+      
+      depth_img_.encoding = sensor_msgs::image_encodings::TYPE_16UC1;
+      depth_img_.is_bigendian = 0;
+      int step = sizeof(unsigned short) * depth_img_.width;
+      int size = step * depth_img_.height;
+      depth_img_.step = step;
+      depth_img_.data.resize(size);
+      memcpy(&depth_img_.data[0], depth_mat.data, size);
+      
+      depth_publisher_.publish(depth_img_);
 
       seq_++;
     }
    private:
     sensor_msgs::PointCloud2 pcl2_msg_;
+    sensor_msgs::Image depth_img_;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_;
     int seq_;
     std::string topic_name_;
+    std::string topic_depth_
     std::string frame_id_;
     ros::Publisher pcl_publisher_;
+    image_transport::Publisher depth_publisher_;
   };
   std::thread thread_;
   ros::ServiceServer config_service_;
