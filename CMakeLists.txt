@@ -13,9 +13,11 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   message_generation
+  image_transport
   royale REQUIRED
 )
 
+find_package(OpenCV REQUIRED)
 find_package(PCL 1.7 REQUIRED common)
 find_package(Boost REQUIRED COMPONENTS system)
 
@@ -122,6 +124,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   include
   ${PCL_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 if (APPLE)
@@ -173,6 +176,7 @@ endif (APPLE)
    ${catkin_LIBRARIES}
    ${royale_LIBS}
    ${PCL_LIBRARIES}
+   ${OpenCV_LIBS}
  )
 
 
