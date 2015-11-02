@@ -5,7 +5,7 @@
 # mode 4:   MODE_5_35FPS_600
 # mode 5:   MODE_5_45FPS_500
 cam0:
-    cam_id: 0005-1203-0034-1816
+    camera_id: 0005-1203-0034-1816
     exposure_time: 2000
     auto_exposure_time: false
     topic_name: pcl
