@@ -131,7 +131,7 @@ class PicoFlexxCamera
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_;
     int seq_;
     std::string topic_name_;
-    std::string topic_depth_
+    std::string topic_depth_;
     std::string frame_id_;
     ros::Publisher pcl_publisher_;
     image_transport::Publisher depth_publisher_;
