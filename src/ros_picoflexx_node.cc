@@ -75,7 +75,7 @@ void PicoFlexxCamera::Initialize()
   std::cout << "Width:           " << camera_device_->getMaxSensorWidth() << std::endl;
   std::cout << "Height:          " << camera_device_->getMaxSensorHeight() << std::endl;
   std::cout << "Operation modes: " << camera_device_->getOperationModes().size() << std::endl;
-  std::cout << "Focal Length  fx: " << lensParams.focalLength.first << std:endl;
+  std::cout << "Focal Length  fx: " << lensParams.focalLength.first << std::endl;
   std::cout << "Focal Length  fy: " << lensParams.focalLength.second << std::endl;
   std::cout << "Principal Pt. px: " << lensParams.principalPoint.first << std::endl;
   std::cout << "Principal Pt. py: " << lensParams.principalPoint.second << std::endl;
